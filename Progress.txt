@@ -2,3 +2,6 @@
 cannot import Ourtoken from brownie already fix this
 8:34 Defi aave 
 8:45 testing aave lending and borrowing
+9h10: work with lending pool
+9h15: error after compile Unable to compile aave/protocol-v2@1.0.1
+	causes by add @aave1.0.1 in dependencies check it later
