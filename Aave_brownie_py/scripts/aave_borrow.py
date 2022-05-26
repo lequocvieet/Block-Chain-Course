@@ -27,8 +27,29 @@ def main():
     tx.wait(1)
     print("Deposited!")
 
-    # After deposit your collateral how much you want to borrow from aave?
+    # After deposit your collateral how much money do you want to borrow from aave?
     borrowable_eth, total_debt_eth = get_borrowable_data(lending_pool, account)
+    print("Let's borrow!")
+    # USDT in term of ETH
+    usdt_eth_price = get_asset_price(
+        config["networks"][network.show_active()]["usdt_eth_price_feed"]
+    )
+    amount_usdt_to_borrow = (1 / usdt_eth_price) * (borrowable_eth * 0.95)
+    # convert borrowable_eth to borrowable_usdt * 95% to prevent liquidation
+    print(f"We are going to borrow {amount_usdt_to_borrow}  USDT")
+
+    # Now we will borrow!
+
+
+def get_asset_price(price_feed_address):
+    # ABI
+    # Address
+    usdt_eth_price_feed = interface.AggregatorV3Interface(price_feed_address)
+    latest_price = usdt_eth_price_feed.latestRoundData()[1]
+    # [1] make usdt_eth_price_feed.latestRoundData() return value at index 1
+    convert_latest_price = Web3.fromWei(latest_price, "Ether")
+    print(f"The USDT/ETH price is {convert_latest_price}")
+    return float(convert_latest_price)
 
 
 def get_borrowable_data(lending_pool, account):
