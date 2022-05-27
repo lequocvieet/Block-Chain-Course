@@ -8,3 +8,5 @@ cannot import Ourtoken from brownie already fix this
 9h29: done deposit and get all user account information about: 
 	Total debt, total collateral, Borrowable_eth
 9h37: Done get latest usdt to eth price and caculated borrowable usdt 
+9h40: Stuck in borrow function, this transaction was reverted by brownie
+	let's find why?

@@ -22,7 +22,11 @@ def main():
     approve_erc20(amount, lending_pool.address, erc20_address, account)
     print("Depositing...")
     tx = lending_pool.deposit(
-        erc20_address, amount, account.address, 0, {"from": account}
+        erc20_address,
+        amount,
+        account.address,
+        0,
+        {"from": account},
     )
     tx.wait(1)
     print("Deposited!")
@@ -34,11 +38,24 @@ def main():
     usdt_eth_price = get_asset_price(
         config["networks"][network.show_active()]["usdt_eth_price_feed"]
     )
-    amount_usdt_to_borrow = (1 / usdt_eth_price) * (borrowable_eth * 0.95)
+    amount_usdt_to_borrow = (1 / usdt_eth_price) * (borrowable_eth * 0.5)
     # convert borrowable_eth to borrowable_usdt * 95% to prevent liquidation
     print(f"We are going to borrow {amount_usdt_to_borrow}  USDT")
 
     # Now we will borrow!
+    usdt_address = config["networks"][network.show_active()]["usdt_token"]
+    print(f"usdt_address: {usdt_address}")
+    borrow_tx = lending_pool.borrow(
+        usdt_address,
+        Web3.toWei(amount_usdt_to_borrow, "Ether"),
+        1,
+        0,
+        account.address,
+        {"from": account},
+    )
+    borrow_tx.wait(1)
+    print("We borrowed some USDT!")
+    get_borrowable_data(lending_pool, account)
 
 
 def get_asset_price(price_feed_address):
@@ -75,7 +92,11 @@ def approve_erc20(amount, spender, erc20_address, account):
     # Address
     print("Approving ERC 20 token...")
     erc20 = interface.IERC20(erc20_address)
-    tx = erc20.approve(spender, amount, {"from": account})
+    tx = erc20.approve(
+        spender,
+        amount,
+        {"from": account},
+    )
     tx.wait(1)
     print("Approved!")
     return tx
