@@ -5,7 +5,7 @@ from scripts.get_weth import get_weth
 
 
 # 0.05
-amount = Web3.toWei(0.05, "Ether")
+amount = Web3.toWei(0.1, "Ether")
 
 
 def main():
@@ -34,38 +34,65 @@ def main():
     # After deposit your collateral how much money do you want to borrow from aave?
     borrowable_eth, total_debt_eth = get_borrowable_data(lending_pool, account)
     print("Let's borrow!")
-    # USDT in term of ETH
-    usdt_eth_price = get_asset_price(
-        config["networks"][network.show_active()]["usdt_eth_price_feed"]
+    # Dai in term of ETH
+    dai_eth_price = get_asset_price(
+        config["networks"][network.show_active()]["dai_eth_price_feed"]
     )
-    amount_usdt_to_borrow = (1 / usdt_eth_price) * (borrowable_eth * 0.5)
-    # convert borrowable_eth to borrowable_usdt * 95% to prevent liquidation
-    print(f"We are going to borrow {amount_usdt_to_borrow}  USDT")
+    amount_dai_to_borrow = (1 / dai_eth_price) * (borrowable_eth * 0.25)
+    # convert borrowable_eth to borrowable_dai * 95% to prevent liquidation
+    print(f"We are going to borrow {amount_dai_to_borrow}  Dai")
 
     # Now we will borrow!
-    usdt_address = config["networks"][network.show_active()]["usdt_token"]
-    print(f"usdt_address: {usdt_address}")
+    dai_address = config["networks"][network.show_active()]["dai_token"]
+    print(f"Dai_address: {dai_address}")
     borrow_tx = lending_pool.borrow(
-        usdt_address,
-        Web3.toWei(amount_usdt_to_borrow, "Ether"),
+        dai_address,
+        Web3.toWei(amount_dai_to_borrow, "Ether"),
         1,
         0,
         account.address,
         {"from": account},
     )
     borrow_tx.wait(1)
-    print("We borrowed some USDT!")
+    print("We borrowed some Dai!")
     get_borrowable_data(lending_pool, account)
+    repay_all(amount, lending_pool, account)
+    get_borrowable_data(lending_pool, account)
+    print(
+        "You have Done 4 things "
+        + "-Swap ETH to WETH "
+        + "-Deposit 0.1 ETH to Aave as Collaterals "
+        + "-Borrow Dai From those Collaterals "
+        + "-Repay all of money"
+    )
+
+
+def repay_all(amount, lending_pool, account):
+    approve_erc20(
+        Web3.toWei(amount, "Ether"),
+        lending_pool,
+        config["networks"][network.show_active()]["dai_token"],
+        account,
+    )
+    repay_tx = lending_pool.repay(
+        config["networks"][network.show_active()]["dai_token"],
+        amount,
+        1,
+        account.address,
+        {"from": account},
+    )
+    repay_tx.wait(1)
+    print("Repayed Successfull!")
 
 
 def get_asset_price(price_feed_address):
     # ABI
     # Address
-    usdt_eth_price_feed = interface.AggregatorV3Interface(price_feed_address)
-    latest_price = usdt_eth_price_feed.latestRoundData()[1]
-    # [1] make usdt_eth_price_feed.latestRoundData() return value at index 1
+    dai_eth_price_feed = interface.AggregatorV3Interface(price_feed_address)
+    latest_price = dai_eth_price_feed.latestRoundData()[1]
+    # [1] make dai_eth_price_feed.latestRoundData() return value at index 1
     convert_latest_price = Web3.fromWei(latest_price, "Ether")
-    print(f"The USDT/ETH price is {convert_latest_price}")
+    print(f"The DAI/ETH price is {convert_latest_price}")
     return float(convert_latest_price)
 
 

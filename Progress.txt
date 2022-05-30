@@ -10,3 +10,7 @@ cannot import Ourtoken from brownie already fix this
 9h37: Done get latest usdt to eth price and caculated borrowable usdt 
 9h40: Stuck in borrow function, this transaction was reverted by brownie
 	let's find why?
+	resolved by replace USDT address by Dai tokenn address
+	Maybe causes by USDT address is not valid or somethings else.
+
+9h43: Done Repay but after repay still receive debt? What's Wrong??
