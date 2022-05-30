@@ -30,6 +30,7 @@ def main():
     )
     tx.wait(1)
     print("Deposited!")
+    get_borrowable_data(lending_pool, account)
 
     # After deposit your collateral how much money do you want to borrow from aave?
     borrowable_eth, total_debt_eth = get_borrowable_data(lending_pool, account)
@@ -38,7 +39,7 @@ def main():
     dai_eth_price = get_asset_price(
         config["networks"][network.show_active()]["dai_eth_price_feed"]
     )
-    amount_dai_to_borrow = (1 / dai_eth_price) * (borrowable_eth * 0.25)
+    amount_dai_to_borrow = (1 / dai_eth_price) * (borrowable_eth * 0.95)
     # convert borrowable_eth to borrowable_dai * 95% to prevent liquidation
     print(f"We are going to borrow {amount_dai_to_borrow}  Dai")
 

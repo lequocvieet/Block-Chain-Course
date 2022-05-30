@@ -13,4 +13,8 @@ cannot import Ourtoken from brownie already fix this
 	resolved by replace USDT address by Dai tokenn address
 	Maybe causes by USDT address is not valid or somethings else.
 
-9h43: Done Repay but after repay still receive debt? What's Wrong??
+9h43: Done Repay but after repay still receive debt? What's Wrong?
+      After testing repay transaction stil works but have no idea why
+      it still has debt in our account
+      Maybe just ignore and run on real kovan test net instead of mainnet-fork
+      
