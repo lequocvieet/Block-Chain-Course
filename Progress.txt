@@ -1,4 +1,20 @@
-Đang làm đến chỗ ERC 20 token
+still in ERC 20 token
 cannot import Ourtoken from brownie already fix this
 8:34 Defi aave 
 8:45 testing aave lending and borrowing
+9h10: work with lending pool
+9h15: error after compile Unable to compile aave/protocol-v2@1.0.1
+	causes by add @aave1.0.1 in dependencies check it later
+9h29: done deposit and get all user account information about: 
+	Total debt, total collateral, Borrowable_eth
+9h37: Done get latest usdt to eth price and caculated borrowable usdt 
+9h40: Stuck in borrow function, this transaction was reverted by brownie
+	let's find why?
+	resolved by replace USDT address by Dai tokenn address
+	Maybe causes by USDT address is not valid or somethings else.
+
+9h43: Done Repay but after repay still receive debt? What's Wrong?
+      After testing repay transaction stil works but have no idea why
+      it still has debt in our account
+      Maybe just ignore and run on real kovan test net instead of mainnet-fork
+      
