@@ -17,4 +17,6 @@ cannot import Ourtoken from brownie already fix this
       After testing repay transaction stil works but have no idea why
       it still has debt in our account
       Maybe just ignore and run on real kovan test net instead of mainnet-fork
+10h : Done AAVE borrow switch to nft-demo branch
+      Ready to learn more interesting things ERC721 token standard!
       
