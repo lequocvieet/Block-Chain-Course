@@ -19,4 +19,7 @@ cannot import Ourtoken from brownie already fix this
       Maybe just ignore and run on real kovan test net instead of mainnet-fork
 10h : Done AAVE borrow switch to nft-demo branch
       Ready to learn more interesting things ERC721 token standard!
+10h18:
+10h35: Create AdvanceCollectible.sol for create an nft that can randomly selected in 3 different dogs
+
       
