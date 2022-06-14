@@ -15,9 +15,11 @@ contract AdvancedCollectible is ERC721, VRFConsumerBase {
         PUG,
         SHIBA_INU,
         ST_BERNARD
-    }
+    } // three type of dogs need for random rare
     mapping(uint256 => Breed) public tokenIdToBreed; //mapping tokenId to Breed
     mapping(bytes32 => address) public requestIdToSender; //mapping requestId to sender to use it inside the vrf function
+    event requestedCollectible(bytes32 indexed requestId, address requester); //the indexed key word just make this event easier to searching
+    event breedAssigned(uint256 indexed tokenId, Breed breed);
 
     constructor(
         address _vrfCoodinator,
@@ -34,12 +36,12 @@ contract AdvancedCollectible is ERC721, VRFConsumerBase {
         fee = _fee;
     }
 
-    function createCollectible(strimg memory tokenURI)
-        public
-        returns (bytes32)
-    {
+    function createCollectible() public returns (bytes32) {
         bytes32 requestId = requestRandomness(keyhash, fee);
         requestIdToSender[requestId] = msg.sender;
+        // give requestID and return it's address
+
+        emit requestedCollectible(requestId, msg.sender);
     }
 
     function fulfillRandomness(bytes32 requestId, uint256 randomNumber)
@@ -50,8 +52,19 @@ contract AdvancedCollectible is ERC721, VRFConsumerBase {
         Breed breed = Breed(randomNumber % 3);
         uint256 newTokenId = tokenCounter;
         tokenIdToBreed[newTokenId] = breed;
+        emit breedAssigned(newTokenId, breed);
         address owner = requestIdToSender[requestId];
         _safeMint(owner, newTokenId);
+
         tokenCounter = tokenCounter + 1; // increase the TokenId for each nft item
+    }
+
+    function setTokenURI(uint256 tokenId, string memory _tokenURI) {
+        require(
+            _isApprovedOrOwner(_msgSender(), tokenId),
+            "ERC721:caller is not owner no approved"
+        );
+        //both _isApprovedOrOwner and _msgSender are ERC721 openzepllin functions
+        _setTokenURI(tokenId, _tokenURI);
     }
 }
