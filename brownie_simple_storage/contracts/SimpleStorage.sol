@@ -4,12 +4,6 @@ contract SimpleStorage {
     // create a Contract class with some variables
     uint256 favoriteNumber;
 
-    /*bool favoriteBool=true;
-    string favoriteString="solidity";
-    int256 favoriteInt=-5;
-    address favoriteAddress=0xef957AB9d7CCeCA2a24841BfC404C8D245bcECDb;
-    bytes32  favoriteByte="cat";*/
-
     struct People {
         //  create a type People inside contract class
         uint256 favoriteNumber;
