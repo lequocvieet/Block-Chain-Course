@@ -17,4 +17,10 @@ cannot import Ourtoken from brownie already fix this
       After testing repay transaction stil works but have no idea why
       it still has debt in our account
       Maybe just ignore and run on real kovan test net instead of mainnet-fork
+10h : Done AAVE borrow switch to nft-demo branch
+      Ready to learn more interesting things ERC721 token standard!
+10h18:
+10h35: Create AdvanceCollectible.sol for create an nft that can randomly selected in 3 different dogs
+10h40 : Done emit 2 event after get new breed and create collectible
+
       
